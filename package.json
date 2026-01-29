@@ -3,7 +3,8 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@opencode-ai/plugin": "^1.1.42"
   },
   "peerDependencies": {
     "typescript": "^5"
