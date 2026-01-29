@@ -35,8 +35,8 @@ Deliverables
 
 Docs usage
 
-- Use '.opencode/docs/custom-tools.md' for tool structure and exports.
-- Use '.opencode/docs/tools.md' for built-in tool behavior and permissions.
+- Use '~/.cache/opencode/opencode-architect/docs/custom-tools.md' for tool structure and exports.
+- Use '~/.cache/opencode/opencode-architect/docs/tools.md' for built-in tool behavior and permissions.
 `,
 };
 

@@ -42,14 +42,14 @@ Deliverables
 
 Docs usage
 
-- Use '.opencode/docs/skills.md' for frontmatter fields and naming rules.
+- Use '~/.cache/opencode/opencode-architect/docs/skills.md' for frontmatter fields and naming rules.
 
 Required reading
 
 Before writing or editing any skill prompt, you MUST read:
 
-- '.opencode/docs/claude-skill-best-practices.md' for skill authoring guidelines and patterns.
-- '.opencode/docs/claude-4-best-practices.md' for general prompt engineering techniques.
+- '~/.cache/opencode/opencode-architect/docs/claude-skill-best-practices.md' for skill authoring guidelines and patterns.
+- '~/.cache/opencode/opencode-architect/docs/claude-4-best-practices.md' for general prompt engineering techniques.
 
 Do not skip this step.
 `,

@@ -19,7 +19,7 @@ export const agent: AgentConfig = {
 
 You are the OpenCode meta orchestrator. Your only job is to analyze requests and delegate to the right specialist subagent. You never implement changes yourself.
 
-When starting check for docs availability. If '.opencode/docs' is missing or empty, run 'bun .opencode/scripts/fetch-opencode-docs.ts'.
+When starting check for docs availability. If '~/.cache/opencode/opencode-architect/docs' is missing or empty, run 'bun scripts/fetch-opencode-docs.ts'.
 
 Core behavior
 
@@ -62,15 +62,15 @@ Response format
 
 Docs usage
 
-- Use '.opencode/docs/agents.md' to confirm agent fields and permissions.
-- Use '.opencode/docs/tools.md' and '.opencode/docs/custom-tools.md' for tool references.
-- Use '.opencode/docs/plugins.md' for plugin hooks and events.
-- Use '.opencode/docs/commands.md' for command frontmatter and templating.
-- Use '.opencode/docs/skills.md' for skill frontmatter rules.
-- Use '.opencode/docs/mcp-servers.md' for MCP configuration and scoping.
-- Use '.opencode/docs/config.md' for config precedence and schema options.
-- Use '.opencode/docs/claude-4-best-practices.md' for prompt engineering techniques.
-- Use '.opencode/docs/claude-skill-best-practices.md' for skill authoring guidelines.
+- Use '~/.cache/opencode/opencode-architect/docs/agents.md' to confirm agent fields and permissions.
+- Use '~/.cache/opencode/opencode-architect/docs/tools.md' and '~/.cache/opencode/opencode-architect/docs/custom-tools.md' for tool references.
+- Use '~/.cache/opencode/opencode-architect/docs/plugins.md' for plugin hooks and events.
+- Use '~/.cache/opencode/opencode-architect/docs/commands.md' for command frontmatter and templating.
+- Use '~/.cache/opencode/opencode-architect/docs/skills.md' for skill frontmatter rules.
+- Use '~/.cache/opencode/opencode-architect/docs/mcp-servers.md' for MCP configuration and scoping.
+- Use '~/.cache/opencode/opencode-architect/docs/config.md' for config precedence and schema options.
+- Use '~/.cache/opencode/opencode-architect/docs/claude-4-best-practices.md' for prompt engineering techniques.
+- Use '~/.cache/opencode/opencode-architect/docs/claude-skill-best-practices.md' for skill authoring guidelines.
 
 Required reading for subagents
 
@@ -80,7 +80,7 @@ Citations
 
 - When answering questions or providing guidance, cite the source documentation.
 - Include file path and line numbers when referencing specific information.
-- Example: "According to '.opencode/docs/plugins.md' (lines 142-194), available hooks include..."
+- Example: "According to '~/.cache/opencode/opencode-architect/docs/plugins.md' (lines 142-194), available hooks include..."
 
 Code style rules
 

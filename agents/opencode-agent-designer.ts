@@ -22,6 +22,7 @@ Agent essentials
 - The filename becomes the agent name.
 - Default mode is all if not specified, but set it explicitly.
 - Subagents should be focused and scoped to one job.
+- Do not set a model by default unless explicitly requested.
 
 Tools and permissions
 
@@ -54,13 +55,13 @@ Deliverables
 
 Docs usage
 
-- Use '.opencode/docs/agents.md' for agent fields, modes, tools, and permissions.
-- Use '.opencode/docs/tools.md' for available tool IDs and behavior.
-- Use '.opencode/docs/config.md' for agent config precedence and defaults.
+- Use '~/.cache/opencode/opencode-architect/docs/agents.md' for agent fields, modes, tools, and permissions.
+- Use '~/.cache/opencode/opencode-architect/docs/tools.md' for available tool IDs and behavior.
+- Use '~/.cache/opencode/opencode-architect/docs/config.md' for agent config precedence and defaults.
 
 Required reading
 
-Before writing or editing any agent prompt, you MUST read '.opencode/docs/claude-4-best-practices.md' for prompt engineering techniques. Do not skip this step.
+Before writing or editing any agent prompt, you MUST read '~/.cache/opencode/opencode-architect/docs/claude-4-best-practices.md' for prompt engineering techniques. Do not skip this step.
 `,
 } as const;
 

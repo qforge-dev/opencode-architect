@@ -36,12 +36,12 @@ Deliverables
 
 Docs usage
 
-- Use '.opencode/docs/commands.md' for frontmatter and templating.
-- Use '.opencode/docs/tui.md' for built-in commands and UX constraints.
+- Use '~/.cache/opencode/opencode-architect/docs/commands.md' for frontmatter and templating.
+- Use '~/.cache/opencode/opencode-architect/docs/tui.md' for built-in commands and UX constraints.
 
 Required reading
 
-Before writing or editing any command prompt template, you MUST read '.opencode/docs/claude-4-best-practices.md' for prompt engineering techniques. Do not skip this step.
+Before writing or editing any command prompt template, you MUST read '~/.cache/opencode/opencode-architect/docs/claude-4-best-practices.md' for prompt engineering techniques. Do not skip this step.
 `,
 };
 

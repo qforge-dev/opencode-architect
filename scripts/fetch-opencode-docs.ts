@@ -1,4 +1,5 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 
 import type { Logger } from "./logger";
@@ -17,7 +18,13 @@ export class OpenCodeDocsFetcher {
 
   public constructor(logger: Logger | null = null) {
     this.sitemapUrl = "https://opencode.ai/sitemap.xml";
-    this.docsDir = path.join(process.cwd(), ".opencode", "docs");
+    this.docsDir = path.join(
+      os.homedir(),
+      ".cache",
+      "opencode",
+      "opencode-architect",
+      "docs",
+    );
     this.logger = logger ?? new ConsoleLogger();
     this.externalDocs = [
       {
@@ -34,7 +41,6 @@ export class OpenCodeDocsFetcher {
   public async run(): Promise<void> {
     try {
       await this.ensureDocsDir();
-      await this.ensureDocsGitignore();
       const sitemap = await this.fetchText(this.sitemapUrl);
       const docUrls = this.extractDocUrls(sitemap);
       const markdownUrls = this.buildMarkdownUrls(docUrls);
@@ -49,28 +55,6 @@ export class OpenCodeDocsFetcher {
 
   private async ensureDocsDir(): Promise<void> {
     await mkdir(this.docsDir, { recursive: true });
-  }
-
-  private async ensureDocsGitignore(): Promise<void> {
-    const gitignorePath = path.join(process.cwd(), ".opencode", ".gitignore");
-    const exists = await this.fileExists(gitignorePath);
-    if (!exists) {
-      await writeFile(gitignorePath, "docs\n");
-      return;
-    }
-
-    const content = await readFile(gitignorePath, "utf-8");
-    const normalized = content.replace(/\r\n/g, "\n");
-    const lines = normalized.split("\n");
-    const hasDocs = lines.some((line) => line.trim() === "docs");
-    if (hasDocs) {
-      return;
-    }
-
-    const trimmed = normalized.replace(/\s*$/, "");
-    const nextContent =
-      trimmed.length === 0 ? "docs\n" : `${trimmed}\n\ndocs\n`;
-    await writeFile(gitignorePath, nextContent);
   }
 
   private async fetchText(url: string): Promise<string> {
@@ -91,8 +75,15 @@ export class OpenCodeDocsFetcher {
     let match: RegExpExecArray | null = regex.exec(sitemap);
     while (match) {
       const url = match[1];
-      if (url !== undefined && url.includes("/docs")) {
-        urls.push(url);
+      if (url !== undefined) {
+        try {
+          const parsed = new URL(url);
+          if (parsed.pathname.startsWith("/docs/")) {
+            urls.push(url);
+          }
+        } catch {
+          continue;
+        }
       }
       match = regex.exec(sitemap);
     }
@@ -103,10 +94,13 @@ export class OpenCodeDocsFetcher {
     const markdownUrls: string[] = [];
     for (const url of urls) {
       const parsed = new URL(url);
-      if (!parsed.pathname.includes("/docs")) {
+      if (!parsed.pathname.startsWith("/docs/")) {
         continue;
       }
       const normalizedPath = this.normalizeDocPath(parsed.pathname);
+      if (normalizedPath === "/docs") {
+        continue;
+      }
       const markdownUrl = `${parsed.origin}${normalizedPath}.md`;
       markdownUrls.push(markdownUrl);
     }

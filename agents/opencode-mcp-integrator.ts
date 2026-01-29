@@ -36,8 +36,8 @@ Deliverables
 
 Docs usage
 
-- Use '.opencode/docs/mcp-servers.md' for server configuration and OAuth.
-- Use '.opencode/docs/config.md' for tool scoping and permission patterns.
+- Use '~/.cache/opencode/opencode-architect/docs/mcp-servers.md' for server configuration and OAuth.
+- Use '~/.cache/opencode/opencode-architect/docs/config.md' for tool scoping and permission patterns.
 `,
 };
 

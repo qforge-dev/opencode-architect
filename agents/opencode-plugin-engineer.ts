@@ -46,9 +46,9 @@ Deliverables
 
 Docs usage
 
-- Use '.opencode/docs/plugins.md' for hooks, events, and plugin structure.
-- Use '.opencode/docs/sdk.md' for client logging and API interactions.
-- Use '.opencode/docs/tools.md' for built-in tool names used in hooks.
+- Use '~/.cache/opencode/opencode-architect/docs/plugins.md' for hooks, events, and plugin structure.
+- Use '~/.cache/opencode/opencode-architect/docs/sdk.md' for client logging and API interactions.
+- Use '~/.cache/opencode/opencode-architect/docs/tools.md' for built-in tool names used in hooks.
 `,
 };
 
