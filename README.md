@@ -27,7 +27,7 @@ Use it whenever you want to:
 - Create skills and tools with consistent prompt engineering
 - Integrate MCP servers with confidence
 
-## Getting started 🚀
+## Contributing 🤝
 Install dependencies:
 
 ```bash
