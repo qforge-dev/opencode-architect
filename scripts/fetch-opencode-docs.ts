@@ -1,19 +1,24 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+
+import type { Logger } from "./logger";
+import { ConsoleLogger } from "./logger";
 
 interface ExternalDoc {
   url: string;
   filename: string;
 }
 
-class OpenCodeDocsFetcher {
+export class OpenCodeDocsFetcher {
   private readonly sitemapUrl: string;
   private readonly docsDir: string;
   private readonly externalDocs: ExternalDoc[];
+  private readonly logger: Logger;
 
-  public constructor() {
+  public constructor(logger: Logger | null = null) {
     this.sitemapUrl = "https://opencode.ai/sitemap.xml";
     this.docsDir = path.join(process.cwd(), ".opencode", "docs");
+    this.logger = logger ?? new ConsoleLogger();
     this.externalDocs = [
       {
         url: "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md",
@@ -29,6 +34,7 @@ class OpenCodeDocsFetcher {
   public async run(): Promise<void> {
     try {
       await this.ensureDocsDir();
+      await this.ensureDocsGitignore();
       const sitemap = await this.fetchText(this.sitemapUrl);
       const docUrls = this.extractDocUrls(sitemap);
       const markdownUrls = this.buildMarkdownUrls(docUrls);
@@ -36,13 +42,35 @@ class OpenCodeDocsFetcher {
       await this.downloadExternalDocs();
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error(`Failed to fetch OpenCode docs: ${message}`);
+      this.logger.error(`Failed to fetch OpenCode docs: ${message}`);
       process.exitCode = 1;
     }
   }
 
   private async ensureDocsDir(): Promise<void> {
     await mkdir(this.docsDir, { recursive: true });
+  }
+
+  private async ensureDocsGitignore(): Promise<void> {
+    const gitignorePath = path.join(process.cwd(), ".opencode", ".gitignore");
+    const exists = await this.fileExists(gitignorePath);
+    if (!exists) {
+      await writeFile(gitignorePath, "docs\n");
+      return;
+    }
+
+    const content = await readFile(gitignorePath, "utf-8");
+    const normalized = content.replace(/\r\n/g, "\n");
+    const lines = normalized.split("\n");
+    const hasDocs = lines.some((line) => line.trim() === "docs");
+    if (hasDocs) {
+      return;
+    }
+
+    const trimmed = normalized.replace(/\s*$/, "");
+    const nextContent =
+      trimmed.length === 0 ? "docs\n" : `${trimmed}\n\ndocs\n`;
+    await writeFile(gitignorePath, nextContent);
   }
 
   private async fetchText(url: string): Promise<string> {
@@ -63,7 +91,7 @@ class OpenCodeDocsFetcher {
     let match: RegExpExecArray | null = regex.exec(sitemap);
     while (match) {
       const url = match[1];
-      if (url.includes("/docs")) {
+      if (url !== undefined && url.includes("/docs")) {
         urls.push(url);
       }
       match = regex.exec(sitemap);
@@ -104,12 +132,12 @@ class OpenCodeDocsFetcher {
         successCount += 1;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`Failed to fetch ${url}: ${message}`);
+        this.logger.error(`Failed to fetch ${url}: ${message}`);
         failureCount += 1;
       }
     }
 
-    console.log(
+    this.logger.info(
       `OpenCode docs fetch complete. Success: ${successCount}, Failed: ${failureCount}.`,
     );
   }
@@ -125,12 +153,12 @@ class OpenCodeDocsFetcher {
         successCount += 1;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`Failed to fetch ${doc.url}: ${message}`);
+        this.logger.error(`Failed to fetch ${doc.url}: ${message}`);
         failureCount += 1;
       }
     }
 
-    console.log(
+    this.logger.info(
       `External docs fetch complete. Success: ${successCount}, Failed: ${failureCount}.`,
     );
   }
@@ -163,6 +191,17 @@ class OpenCodeDocsFetcher {
     }
     return `${normalized}.md`;
   }
+
+  private async fileExists(filePath: string): Promise<boolean> {
+    try {
+      await access(filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
 
-void new OpenCodeDocsFetcher().run();
+if (import.meta.main) {
+  void new OpenCodeDocsFetcher().run();
+}
