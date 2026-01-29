@@ -1,7 +1,28 @@
 {
   "name": "@qforge/opencode-architect",
-  "module": "index.ts",
+  "version": "0.1.0",
+  "private": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
+  "scripts": {
+    "build": "bun build index.ts --outdir dist --format esm --target node --dts",
+    "prepublishOnly": "bun run build"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@opencode-ai/plugin": "^1.1.42"
