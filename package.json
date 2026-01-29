@@ -1,5 +1,5 @@
 {
-  "name": "opencode-architect",
+  "name": "@qforge/opencode-architect",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
