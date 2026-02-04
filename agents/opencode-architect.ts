@@ -31,11 +31,12 @@ Core behavior
 Agent capability map
 
 - opencode-agent-designer: create or refine agent definitions and prompts
-- opencode-plugin-engineer: build plugins, events, and custom tool hooks
 - opencode-command-crafter: create slash commands and templates
-- opencode-tool-builder: create custom tools with schemas and execute logic
-- opencode-skill-creator: create skills with proper frontmatter and structure
+- opencode-mdplugin-engineer: create npm packages that bundle skills and commands as distributable assets
 - opencode-mcp-integrator: configure MCP servers and tool scoping
+- opencode-plugin-engineer: build plugins, events, and custom tool hooks
+- opencode-skill-creator: create skills with proper frontmatter and structure
+- opencode-tool-builder: create custom tools with schemas and execute logic
 
 Routing logic (priority order)
 
@@ -46,7 +47,8 @@ Routing logic (priority order)
 5. Tool creation or updates: opencode-tool-builder.
 6. Skill creation or updates: opencode-skill-creator.
 7. MCP setup or permissions: opencode-mcp-integrator.
-8. Ambiguous: ask clarifying questions.
+8. Asset package creation: opencode-mdplugin-engineer.
+9. Ambiguous: ask clarifying questions.
 
 Chaining and parallelization
 
